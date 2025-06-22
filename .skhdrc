@@ -1,0 +1,29 @@
+# focus window
+alt - h : yabai -m window --focus west
+alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north
+alt - l : yabai -m window --focus east
+
+# swap managed window
+shift + alt - h : yabai -m window --swap west
+shift + alt - j : yabai -m window --swap south
+shift + alt - k : yabai -m window --swap north
+shift + alt - l : yabai -m window --swap east
+
+# move managed window
+ctrl + alt - h : yabai -m window --warp west
+ctrl + alt - j : yabai -m window --warp south
+ctrl + alt - k : yabai -m window --warp north
+ctrl + alt - l : yabai -m window --warp east
+
+# full screen
+ctrl + alt - f : yabai -m window --toggle zoom-fullscreen
+
+# rotate layout
+alt - s : yabai -m space --rotate 90
+
+# float / unfloat window and center on screen
+shift + alt - space : yabai -m window --toggle float --grid 4:4:1:1:2:2
+
+# Application launchers
+alt - return : osascript ~/.config/scripts/NewKittyWindow.scpt
