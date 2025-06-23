@@ -1,0 +1,5 @@
+admin:
+  endpoint: edge-proxy-internal.spotify.net:443
+  insecure: false
+  authType: ExternalCommand
+  command: [gcloud,auth,print-identity-token]
