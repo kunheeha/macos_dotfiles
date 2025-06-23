@@ -8,6 +8,11 @@ CASE_SENSITIVE='false'
 # show hidden files with fzf
 export FZF_DEFAULT_COMMAND="find \! \( -path '*\.git' -prune \) -printf '%P\n'"
 
+# Pyenv
+export PYENV_ROOT="$HOME/.PYENV"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
 # PLUGIINS
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
