@@ -6,6 +6,7 @@ options=(
   hidpi=on
   active_color=0xffffffff
   inactive_color=0xff414550
+  whitelist="Google Chrome,kitty,Slack"
 )
 
 borders "${options[@]}"
