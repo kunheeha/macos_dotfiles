@@ -35,3 +35,4 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 # Created by `pipx` on 2025-06-23 07:39:15
 export PATH="$PATH:/Users/kunheeh/.local/bin"
+export PATH=/opt/spotify-devex/bin:$PATH
