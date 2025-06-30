@@ -1,0 +1,80 @@
+" ------------------------------------------
+" Options
+" ------------------------------------------
+
+" Keywords
+set iskeyword=@,48-57,192-255
+
+" File encoding
+set fileencoding=utf-8
+
+" Backup and Swap
+set nobackup
+set noswapfile
+set nowritebackup
+
+" Search behavior
+set ignorecase
+set smartcase
+set showtabline=2
+
+" Indentation
+set smartindent
+set expandtab
+set tabstop=2
+set shiftwidth=2
+
+" Split behavior
+set splitbelow
+set splitright
+
+" Timeouts
+set timeoutlen=1000
+set updatetime=300
+
+" Persistent undo
+set undofile
+
+" Line numbers
+set number
+set relativenumber
+
+" Scrolloff
+set scrolloff=8
+set sidescrolloff=8
+
+" Wrapping
+set wrap
+set linebreak
+
+" Appearance
+set numberwidth=4
+set signcolumn=yes
+set mouse=a
+set clipboard=unnamedplus
+
+" Search options
+set hlsearch
+set incsearch
+
+" Colors
+set termguicolors
+
+" ------------------------------------------
+" Keymaps
+" ------------------------------------------
+
+" Set leader key
+let mapleader = ","
+
+nnoremap <silent> <leader>w :w<CR>
+nnoremap <silent> <Up> :resize +2<CR>
+nnoremap <silent> <Down> :resize -2<CR>
+nnoremap <silent> <Left> :vertical resize -2<CR>
+nnoremap <silent> <Right> :vertical resize +2<CR>
+nnoremap <silent> <leader>nr :set invrnu<CR>
+
+vnoremap <silent> < <gv
+vnoremap <silent> > >gv
+vnoremap <silent> J :m '>+1<CR>gv=gv
+vnoremap <silent> K :m '<-2<CR>gv=gv
