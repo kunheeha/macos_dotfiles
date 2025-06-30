@@ -15,6 +15,8 @@ alias ref='cd ~/References'
 alias notes='cd ~/Notes'
 alias dots='cd ~/dots/'
 alias secrets='cd ~/.secrets'
+alias tmp='cd ~/tmp && vim tmp'
+alias personal='cd ~/Personal'
 # use lsd instead of vanilla ls
 alias ls='lsd'
 alias la='lsd -a'
