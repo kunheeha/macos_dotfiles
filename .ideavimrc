@@ -67,6 +67,8 @@ set termguicolors
 " Set leader key
 let mapleader = ","
 
+nnoremap <leader>w :w<CR>
+
 nnoremap <silent> <leader>w :w<CR>
 nnoremap <silent> <Up> :resize +2<CR>
 nnoremap <silent> <Down> :resize -2<CR>
@@ -78,3 +80,23 @@ vnoremap <silent> < <gv
 vnoremap <silent> > >gv
 vnoremap <silent> J :m '>+1<CR>gv=gv
 vnoremap <silent> K :m '<-2<CR>gv=gv
+
+" ------------------------------------------
+" LSP keybinds (from nvim config)
+" ------------------------------------------
+
+nmap gd :action GotoDeclaration<CR>
+nmap K :action QuickJavaDoc<CR>
+nmap ]d :action GotoNextError<CR>
+nmap [d :action GotoPreviousError<CR>
+nmap gr :action FindUsages<CR>
+nmap <C-s> :action FileStructurePopup<CR>
+
+" ------------------------------------------
+" Telescope keybinds (from nvim config)
+" ------------------------------------------
+
+nmap <leader>f :action GotoFile<CR>
+nmap <C-g> :action FindInPath<CR>
+nmap <C-b> :action Switcher<CR>
+nmap <leader>h :action ShowClipboardHistory<CR>
