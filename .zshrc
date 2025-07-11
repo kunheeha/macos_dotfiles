@@ -22,6 +22,7 @@ source /opt/homebrew/share/zsh-vi-mode/zsh-vi-mode.zsh
 
 # Aliases
 source ~/.config/aliases/aliases.zsh
+source ~/.config/aliases/ssh_aliases.sh
 
 # Env Vars
 source ~/.config/vars/vars.zsh
