@@ -15,7 +15,7 @@ eval "$(pyenv init -)"
 # pyenv-virtualenv
 eval "$(pyenv virtualenv-init -)"
 
-# PLUGIINS
+# PLUGINS
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-vi-mode/zsh-vi-mode.zsh
