@@ -40,6 +40,10 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export PATH="$PATH:/Users/kunheeh/.local/bin"
 export PATH=/opt/spotify-devex/bin:$PATH
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 # Claude-Code
 export CLAUDE_CODE_USE_VERTEX=1
 export ANTHROPIC_SMALL_FAST_MODEL='claude-3-5-haiku@20241022'
