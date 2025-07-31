@@ -30,5 +30,5 @@ alt - return : osascript ~/.config/scripts/NewKittyWindow.scpt
 alt - w : osascript ~/.config/scripts/NewChromeWindow.scpt
 
 # If Multiple Displays
-alt - 1 : yabai -m display --focus 2
-alt - 2 : yabai -m display --focus 1
+# alt - 1 : yabai -m display --focus 2
+# alt - 2 : yabai -m display --focus 1
