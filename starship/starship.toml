@@ -1,17 +1,9 @@
-#[╾─╼]
-#[\[](black)
-#[\]](black)
 
 format = '''
 [┌─ ](black)[ ](blue)[─╼](black)$directory$git_branch$git_status$fill$golang$python$nodejs$java
 [└────](black)$git_commit$git_state
 [▶ ](black)
 '''
-
-#[os]
-#format = '[$symbol ]'
-#[os.symbols]
-#Arch = '[](blue)'
 
 [fill]
 symbol = ' '
