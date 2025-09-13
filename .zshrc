@@ -8,12 +8,30 @@ CASE_SENSITIVE='false'
 # show hidden files with fzf
 export FZF_DEFAULT_COMMAND="find \! \( -path '*\.git' -prune \) -printf '%P\n'"
 
-# Pyenv
+# Lazy load pyenv
 export PYENV_ROOT="$HOME/.PYENV"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-# pyenv-virtualenv
-eval "$(pyenv virtualenv-init -)"
+export PATH="$PYENV_ROOT/bin:$PATH"
+pyenv() {
+  unset -f pyenv python pip
+  eval "$(command pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+  pyenv "$@"
+}
+python() {
+  unset -f pyenv python pip
+  eval "$(command pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+  python "$@"
+}
+pip() {
+  unset -f pyenv python pip
+  eval "$(command pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+  pip "$@"
+}
+
+# Fast completion init (skip security checks)
+autoload -Uz compinit && compinit -C
 
 # PLUGINS
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -32,9 +50,13 @@ source ~/.secrets/gh_secrets.sh
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# Lazy load SDKMAN
 export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk() {
+  unset -f sdk
+  [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+  sdk "$@"
+}
 
 # Created by `pipx` on 2025-06-23 07:39:15
 export PATH="$PATH:/Users/kunheeh/.local/bin"
