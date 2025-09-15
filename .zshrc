@@ -8,25 +8,31 @@ CASE_SENSITIVE='false'
 # show hidden files with fzf
 export FZF_DEFAULT_COMMAND="find \! \( -path '*\.git' -prune \) -printf '%P\n'"
 
-# Lazy load pyenv
+# Lazy load pyenv (with auto-load in ~/Projects)
 export PYENV_ROOT="$HOME/.PYENV"
 export PATH="$PYENV_ROOT/bin:$PATH"
+
+_load_pyenv() {
+  if [[ -z "$_PYENV_LOADED" ]]; then
+    eval "$(command pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+    export _PYENV_LOADED=1
+  fi
+}
+
 pyenv() {
+  _load_pyenv
   unset -f pyenv python pip
-  eval "$(command pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
   pyenv "$@"
 }
 python() {
-  unset -f pyenv python pip
-  eval "$(command pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+  _load_pyenv
+  unset -f python pip
   python "$@"
 }
 pip() {
-  unset -f pyenv python pip
-  eval "$(command pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+  _load_pyenv
+  unset -f pip
   pip "$@"
 }
 
@@ -50,11 +56,19 @@ source ~/.secrets/gh_secrets.sh
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
 
-# Lazy load SDKMAN
+# Lazy load SDKMAN (with auto-load in ~/Projects)
 export SDKMAN_DIR="$HOME/.sdkman"
+
+_load_sdkman() {
+  if [[ -z "$_SDKMAN_LOADED" && -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]; then
+    source "$SDKMAN_DIR/bin/sdkman-init.sh"
+    export _SDKMAN_LOADED=1
+  fi
+}
+
 sdk() {
+  _load_sdkman
   unset -f sdk
-  [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
   sdk "$@"
 }
 
@@ -80,6 +94,21 @@ npm() {
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   npm "$@"
 }
+
+# Auto-load pyenv and SDKMAN when in ~/Projects directory
+_check_projects_dir() {
+  if [[ "$PWD" == "$HOME/Projects"* ]]; then
+    _load_pyenv
+    _load_sdkman
+  fi
+}
+
+# Hook into directory changes
+autoload -U add-zsh-hook
+add-zsh-hook chpwd _check_projects_dir
+
+# Check on shell startup
+_check_projects_dir
 
 # Claude-Code
 export CLAUDE_CODE_USE_VERTEX=1
