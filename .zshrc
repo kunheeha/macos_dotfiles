@@ -94,6 +94,12 @@ npm() {
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
   npm "$@"
 }
+# Load npm when running claude
+claude() {
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  unset -f claude
+  claude "$@"
+}
 
 # Auto-load pyenv and SDKMAN when in ~/Projects directory
 _check_projects_dir() {
