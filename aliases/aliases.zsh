@@ -10,7 +10,7 @@ alias vim='nvim'
 # ##################
 
 # Quick Navigation
-alias p='cd ~/Projects'
+alias p='cd ~/Projects && cd $(find . -maxdepth 1 -type d | sed "s|./||" | grep -v "^\.$" | fzf)'
 alias ref='cd ~/References'
 alias notes='cd ~/Notes'
 alias dots='cd ~/dots/'
