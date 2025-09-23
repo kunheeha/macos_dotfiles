@@ -56,21 +56,9 @@ source ~/.secrets/gh_secrets.sh
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
 
-# Lazy load SDKMAN (with auto-load in ~/Projects)
+# SDKMAN
 export SDKMAN_DIR="$HOME/.sdkman"
-
-_load_sdkman() {
-  if [[ -z "$_SDKMAN_LOADED" && -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]]; then
-    source "$SDKMAN_DIR/bin/sdkman-init.sh"
-    export _SDKMAN_LOADED=1
-  fi
-}
-
-sdk() {
-  _load_sdkman
-  unset -f sdk
-  sdk "$@"
-}
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 # Created by `pipx` on 2025-06-23 07:39:15
 export PATH="$PATH:/Users/kunheeh/.local/bin"
@@ -101,11 +89,10 @@ claude() {
   claude "$@"
 }
 
-# Auto-load pyenv and SDKMAN when in ~/Projects directory
+# Auto-load pyenv when in ~/Projects directory
 _check_projects_dir() {
   if [[ "$PWD" == "$HOME/Projects"* ]]; then
     _load_pyenv
-    _load_sdkman
   fi
 }
 
