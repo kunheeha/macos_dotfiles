@@ -27,7 +27,7 @@ shift + alt - space : yabai -m window --toggle float --grid 4:4:1:1:2:2
 
 # Application launchers
 alt - return : osascript ~/.config/scripts/NewKittyWindow.scpt
-alt - w : osascript ~/.config/scripts/NewChromeWindow.scpt
+alt - w : osascript ~/.config/scripts/NewFirefoxWindow.scpt
 
 # If Multiple Displays
 # alt - 1 : yabai -m display --focus 2
