@@ -9,6 +9,9 @@ alias vim='nvim'
 # COMMON COMMANDS
 # ##################
 
+# Reload zshrc
+alias reload='source ~/.zshrc'
+
 # Quick Navigation
 alias p='cd ~/Projects && cd $(find . -maxdepth 1 -type d | sed "s|./||" | grep -v "^\.$" | fzf)'
 alias ref='cd ~/References'
