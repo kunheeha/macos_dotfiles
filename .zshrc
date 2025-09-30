@@ -46,6 +46,7 @@ source /opt/homebrew/share/zsh-vi-mode/zsh-vi-mode.zsh
 
 # Aliases
 source ~/.config/aliases/aliases.zsh
+source ~/.config/aliases/gcloud_aliases.zsh
 
 # Env Vars
 source ~/.config/vars/vars.zsh
