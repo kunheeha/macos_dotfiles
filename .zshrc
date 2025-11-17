@@ -12,28 +12,37 @@ export FZF_DEFAULT_COMMAND="find \! \( -path '*\.git' -prune \) -printf '%P\n'"
 export PYENV_ROOT="$HOME/.PYENV"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
-_load_pyenv() {
-  if [[ -z "$_PYENV_LOADED" ]]; then
-    eval "$(command pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-    export _PYENV_LOADED=1
-  fi
-}
+# Reset pyenv loaded flag to ensure proper initialization in new shells/panes
+unset _PYENV_LOADED
 
 pyenv() {
-  _load_pyenv
-  unset -f pyenv python pip
+  if [[ -z "$_PYENV_LOADED" ]]; then
+    unset -f pyenv python pip
+    eval "$(command pyenv init -)"
+    eval "$(command pyenv virtualenv-init -)"
+    export _PYENV_LOADED=1
+  fi
   pyenv "$@"
 }
+
 python() {
-  _load_pyenv
-  unset -f python pip
-  python "$@"
+  if [[ -z "$_PYENV_LOADED" ]]; then
+    unset -f pyenv python pip
+    eval "$(command pyenv init -)"
+    eval "$(command pyenv virtualenv-init -)"
+    export _PYENV_LOADED=1
+  fi
+  command python "$@"
 }
+
 pip() {
-  _load_pyenv
-  unset -f pip
-  pip "$@"
+  if [[ -z "$_PYENV_LOADED" ]]; then
+    unset -f pyenv python pip
+    eval "$(command pyenv init -)"
+    eval "$(command pyenv virtualenv-init -)"
+    export _PYENV_LOADED=1
+  fi
+  command pip "$@"
 }
 
 # Fast completion init (skip security checks)
@@ -91,8 +100,11 @@ claude() {
 
 # Auto-load pyenv when in ~/Projects directory
 _check_projects_dir() {
-  if [[ "$PWD" == "$HOME/Projects"* ]]; then
-    _load_pyenv
+  if [[ "$PWD" == "$HOME/Projects"* && -z "$_PYENV_LOADED" ]]; then
+    unset -f pyenv python pip 2>/dev/null
+    eval "$(command pyenv init -)"
+    eval "$(command pyenv virtualenv-init -)"
+    export _PYENV_LOADED=1
   fi
 }
 
