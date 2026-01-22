@@ -20,6 +20,7 @@ alias dots='cd ~/dots/'
 alias secrets='cd ~/.secrets'
 alias tmp='cd ~/tmp && vim tmp'
 alias personal='cd ~/Personal'
+alias docs='cd ~/Documents/'
 # use lsd instead of vanilla ls
 alias ls='lsd'
 alias la='lsd -a'
