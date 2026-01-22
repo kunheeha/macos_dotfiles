@@ -1,1 +1,14 @@
 karabiner/automatic_backups
+
+## nvim-metals
+.metals/
+.bloop/
+.scala-build/
+metals.sbt
+project/metals.sbt
+
+## jdtls
+.classpath
+.project
+.settings
+.factorypath
