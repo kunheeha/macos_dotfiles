@@ -62,8 +62,11 @@ source ~/.config/vars/vars.zsh
 source ~/.secrets/gh_secrets.sh
 
 # starship
-export STARSHIP_CONFIG=~/.config/starship/starship-zenbones-light.toml
+export STARSHIP_CONFIG=~/.config/starship/current.toml
 eval "$(starship init zsh)"
+
+# theme switcher
+theme() { ~/dots/scripts/theme-switch.sh "$1"; }
 
 # SDKMAN
 export SDKMAN_DIR="$HOME/.sdkman"
