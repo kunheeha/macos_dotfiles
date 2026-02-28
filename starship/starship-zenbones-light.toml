@@ -1,0 +1,53 @@
+
+format = '''
+[┌─ ](brightblack)[ ](white)[─╼](brightblack)$directory$git_branch$git_status$fill$golang$python$nodejs$java
+[└────](brightblack)$git_commit$git_state
+[▶ ](brightblack)
+'''
+
+[fill]
+symbol = ' '
+
+[directory]
+read_only = '  '
+read_only_style = 'brightblack'
+format = '[$read_only]($read_only_style)[\[](brightblack)[$path](white)[\]](brightblack)'
+truncate_to_repo = false
+
+[username]
+format = '[\[](brightblack)[$user](white)[\]](brightblack)'
+show_always = false
+
+[git_branch]
+format = '[╾─╼](brightblack)[\[](brightblack)[$symbol$branch](white)[\]](brightblack)'
+
+[git_status]
+format = '[\[](brightblack)[$all_status$ahead_behind](white)[\]](brightblack)'
+
+[git_commit]
+only_detached = true
+tag_disabled = false
+format = '[╾╼](brightblack)[\[](brightblack)[$hash$tag](green)[\]](brightblack)'
+
+[git_state]
+format = '[╾╼](brightblack)[\[](brightblack)[$state($progress_current/$progress_total)](yellow)[\]](brightblack)'
+
+[python]
+format = '[\[](brightblack)[$symbol$version$virtualenv]($white)[\]](brightblack)'
+version_format = 'v${raw}'
+symbol = '[](white) '
+
+[nodejs]
+format = '[\[](brightblack)[$symbol$version]($white)[\]](brightblack)'
+version_format = 'v${raw}'
+symbol = '[󰎙](green) '
+
+[golang]
+format = '[\[](brightblack)[$symbol$version]($white)[\]](brightblack)'
+version_format = 'v${raw}'
+symbol = '[](cyan) '
+
+[java]
+format = '[\[](brightblack)[$symbol$version]($white)[\]](brightblack)'
+version_format = 'v${raw}'
+symbol = '[󰬷](red) '

@@ -62,7 +62,7 @@ source ~/.config/vars/vars.zsh
 source ~/.secrets/gh_secrets.sh
 
 # starship
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
+export STARSHIP_CONFIG=~/.config/starship/starship-zenbones-light.toml
 eval "$(starship init zsh)"
 
 # SDKMAN
