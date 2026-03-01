@@ -12,13 +12,9 @@ if [[ "$MODE" != "light" && "$MODE" != "dark" && "$MODE" != "nord" ]]; then
   exit 1
 fi
 
-# Persist mode for other scripts (nord is treated as dark for tmux/starship/nvim)
+# Persist mode for other scripts
 mkdir -p "$HOME/.config/theme"
-if [[ "$MODE" == "nord" ]]; then
-  echo "dark" > "$HOME/.config/theme/current"
-else
-  echo "$MODE" > "$HOME/.config/theme/current"
-fi
+echo "$MODE" > "$HOME/.config/theme/current"
 
 # --- Kitty ---
 case "$MODE" in
@@ -53,11 +49,11 @@ fi
 ln -sf "$STARSHIP_THEME" "$DOTS/starship/current.toml"
 
 # --- Neovim ---
-if [[ "$MODE" == "dark" || "$MODE" == "nord" ]]; then
-  NVIM_THEME="rose-pine"
-else
-  NVIM_THEME="zenbones"
-fi
+case "$MODE" in
+  dark) NVIM_THEME="rose-pine" ;;
+  nord) NVIM_THEME="nord" ;;
+  *)    NVIM_THEME="zenbones" ;;
+esac
 # Send to all running nvim instances
 while IFS= read -r sock; do
   nvim --server "$sock" --remote-send "<Cmd>lua require('config.colors').set('$NVIM_THEME')<CR>" 2>/dev/null || true
