@@ -7,21 +7,25 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/Applications/kitty.app/Contents/M
 DOTS="$HOME/dots"
 MODE="${1:-}"
 
-if [[ "$MODE" != "light" && "$MODE" != "dark" ]]; then
-  echo "Usage: theme-switch.sh <light|dark>"
+if [[ "$MODE" != "light" && "$MODE" != "dark" && "$MODE" != "nord" ]]; then
+  echo "Usage: theme-switch.sh <light|dark|nord>"
   exit 1
 fi
 
-# Persist mode for other scripts
+# Persist mode for other scripts (nord is treated as dark for tmux/starship/nvim)
 mkdir -p "$HOME/.config/theme"
-echo "$MODE" > "$HOME/.config/theme/current"
+if [[ "$MODE" == "nord" ]]; then
+  echo "dark" > "$HOME/.config/theme/current"
+else
+  echo "$MODE" > "$HOME/.config/theme/current"
+fi
 
 # --- Kitty ---
-if [[ "$MODE" == "dark" ]]; then
-  KITTY_THEME="rose-pine.conf"
-else
-  KITTY_THEME="zenbones_light.conf"
-fi
+case "$MODE" in
+  dark) KITTY_THEME="rose-pine.conf" ;;
+  nord) KITTY_THEME="nord.conf" ;;
+  *)    KITTY_THEME="zenbones_light.conf" ;;
+esac
 # Update symlink for new windows
 ln -sf "$KITTY_THEME" "$DOTS/kitty/current-theme.conf"
 # Live reload all existing kitty windows
@@ -32,7 +36,7 @@ for sock in /tmp/kitty-socket-*; do
 done
 
 # --- Tmux ---
-if [[ "$MODE" == "dark" ]]; then
+if [[ "$MODE" == "dark" || "$MODE" == "nord" ]]; then
   TMUX_THEME="rose-pine-theme.conf"
 else
   TMUX_THEME="zenbones-light-theme.conf"
@@ -41,7 +45,7 @@ ln -sf "$TMUX_THEME" "$DOTS/tmux/current-theme.conf"
 tmux source-file "$HOME/.tmux.conf" 2>/dev/null || true
 
 # --- Starship ---
-if [[ "$MODE" == "dark" ]]; then
+if [[ "$MODE" == "dark" || "$MODE" == "nord" ]]; then
   STARSHIP_THEME="starship.toml"
 else
   STARSHIP_THEME="starship-zenbones-light.toml"
@@ -49,7 +53,7 @@ fi
 ln -sf "$STARSHIP_THEME" "$DOTS/starship/current.toml"
 
 # --- Neovim ---
-if [[ "$MODE" == "dark" ]]; then
+if [[ "$MODE" == "dark" || "$MODE" == "nord" ]]; then
   NVIM_THEME="rose-pine"
 else
   NVIM_THEME="zenbones"
