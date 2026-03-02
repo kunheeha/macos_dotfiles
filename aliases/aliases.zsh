@@ -29,6 +29,8 @@ alias ll='lsd -la'
 alias lt='lsd --tree'
 # Changing directory using fzf
 alias fd='dir=$(ls -d */ | fzf --preview "ls {}") && cd "$dir"'
+# Jump to project in monorepo
+alias mp='dir=$(find . -maxdepth 2 -mindepth 2 -type d | sed "s|^./||" | fzf --scheme=path --preview "echo {} && ls {}") && cd "$dir"'
 
 # ##################
 # GIT
