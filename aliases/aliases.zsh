@@ -28,7 +28,7 @@ alias la='lsd -a'
 alias ll='lsd -la'
 alias lt='lsd --tree'
 # Changing directory using fzf
-alias fd='dir=$(ls -d */ | fzf) && cd "$dir"'
+alias fd='dir=$(ls -d */ | fzf --preview "ls {}") && cd "$dir"'
 
 # ##################
 # GIT
