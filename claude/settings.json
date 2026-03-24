@@ -1,0 +1,50 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "jdtls-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
+  },
+  "effortLevel": "medium",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cwd=$(pwd); if echo \"$cwd\" | grep -q \"$HOME/Projects/\"; then proj=$(echo \"$cwd\" | sed \"s|$HOME/Projects/||\" | cut -d/ -f1 | sed 's/\\.git$//'); vault=\"$HOME/Notes/Work/Projects/$proj\"; if [ ! -d \"$vault\" ]; then echo \"{\\\"feedback\\\": \\\"New project detected: $proj. No matching vault entry at ~/Notes/Work/Projects/$proj/. Consider asking the user if they want to register this in the vault.\\\"}\"; fi; fi"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "input=$(cat); cmd=$(echo \"$input\" | jq -r '.tool_input.command // empty'); if echo \"$cmd\" | grep -qiE '(rm\\s+-rf\\s+/|git\\s+push\\s+--force|git\\s+reset\\s+--hard|DROP\\s+(TABLE|DATABASE))'; then echo '{\"block\": true, \"message\": \"Blocked: destructive command detected. Review and run manually if intended.\"}'; exit 2; fi"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"feedback\": \"Session ending. Remember: update ~/Notes/Claude/_WorkContext.md and append to ~/Notes/Claude/SessionLogs/ if substantive work occurred.\"}'"
+          }
+        ]
+      }
+    ]
+  }
+}
