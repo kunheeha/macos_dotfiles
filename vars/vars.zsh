@@ -1,0 +1,1 @@
+export GIT_LFS_SKIP_PUSH=1
