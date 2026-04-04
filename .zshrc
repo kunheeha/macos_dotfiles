@@ -8,6 +8,9 @@ CASE_SENSITIVE='false'
 # show hidden files with fzf
 export FZF_DEFAULT_COMMAND="find \! \( -path '*\.git' -prune \) -printf '%P\n'"
 
+# Google Cloud SDK (for cbt, bq, etc.)
+export PATH="/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
+
 # Lazy load pyenv (with auto-load in ~/Projects)
 export PYENV_ROOT="$HOME/.PYENV"
 export PATH="$PYENV_ROOT/bin:$PATH"
