@@ -56,6 +56,7 @@ Present your assessment of what got done and what didn't, then ask specifically 
 - Anything they learned that should go into Systems or Project notes
 - **Slack threads that seem important** — present a summary of notable Slack activity and ask which should be captured in the vault
 - **Decisions or context from Slack not yet in vault** — if a Slack thread contained a decision relevant to Active Focus, flag it for recording
+- **Study capture** — if today's plan included study time (FP, Swedish, Beam, or any learning goal from the 12-week plan), ask: "Did you study today? Anything worth noting — one insight, connection to work, or thing you'd explain differently now?" If yes, append to the relevant learning note (e.g., `functional-programming.md`, `pronunciation.md`). Even one sentence compounds over time.
 
 Wait for the user's response before proceeding to updates.
 
@@ -64,12 +65,17 @@ Wait for the user's response before proceeding to updates.
 After getting user input, make these updates:
 
 ### ~/Notes/Claude/_WorkContext.md
-- Refresh "Active Focus" with current state of each workstream
-- Update "Blockers" — remove resolved ones, add new ones
-- Update "Recent Decisions" if any were made today
-- Update "Open Questions" — remove answered, add new
-- Set "Next Session Priorities" based on what's most important tomorrow — be specific about what's happening in tomorrow's meetings if known (e.g., "pitching X in refinement", not just "prep for refinement")
-- Bump the `updated` field in frontmatter
+
+Update rules — enforce every /eod:
+- **Active Focus**: MAX 5 lines per item. State only what's current + immediate next step. Move narrative history, PR review details, and resolved sub-items to the project's `_index.md` or a dedicated project note. If an item is DONE or RESOLVED, remove it entirely — it's captured in SessionLogs.
+- **Blockers**: DELETE resolved blockers. Do not strikethrough. Resolved = gone. The resolution is recorded in SessionLogs and project notes.
+- **Recent Decisions**: Keep only decisions from the last 2 weeks. Move older entries to `~/Notes/Claude/_Decisions.md` with full context preserved there.
+- **Open Questions**: DELETE answered questions. Do not strikethrough.
+- **Action Items from meetings**: DELETE completed items. If an item has been open >2 weeks with no progress, move it to the relevant project note or flag it in Next Session Priorities for the user to decide.
+- **Next Session Priorities**: Set based on what's most important next — be specific about meeting agendas, deadlines, and blocking items.
+- Bump the `updated` field in frontmatter.
+- **Stale destination check**: When removing detail from Active Focus, verify the destination note (`[[project_index]]` or project note) reflects the current state. If the destination note's `updated` field is >1 week old and _WorkContext has newer information about that project, update the destination note before pruning from _WorkContext. Future sessions follow these links — stale destinations create contradictions.
+- **Line count check**: After all updates, count total lines in _WorkContext.md. If >60, prune further. Target: 40-60 lines. The file must be scannable in 30 seconds.
 
 ### ~/Notes/Claude/SessionLogs/YYYY-MM.md
 Append a session entry:
@@ -83,9 +89,11 @@ Append a session entry:
 ```
 
 ### ~/Notes/Planning/soon.md
-- Remove items that are now done
-- Add any new items that came up during the day
-- Move buffer items that got completed
+- DELETE (not strikethrough) items that are done. They are already captured in SessionLogs.
+- DELETE any remaining strikethrough items from previous sessions — they should already be gone.
+- If an item has been sitting unchanged for >2 weeks, move it to `eventually.md` or delete it.
+- Add any new items that came up during the day.
+- After cleanup: soon.md should contain ONLY open, actionable items. No history.
 
 ### ~/Notes/Planning/today.md
 Reset to the clean scratchpad template for tomorrow:
@@ -110,6 +118,19 @@ updated: <today's date>
 
 ### ~/Notes/Work/Projects/ and ~/Notes/Work/Systems/ (if applicable)
 - If Slack activity revealed decisions, status changes, or learnings about specific projects or systems, update the relevant notes
+
+### ~/Notes/CareerDev/CareerLog/careerlog-2026.md (if significant work completed)
+If any of the following happened today, append a bullet to the current month's section:
+- PR merged (include repo#number link)
+- Bug fixed and deployed
+- RFC shared, accepted, or received significant feedback
+- Investigation completed with outcome
+- Cross-team coordination that had impact (e.g., unblocked another team, led a meeting with outcomes)
+- System knowledge documented (new system note or major update)
+
+Format: `* <what> — <impact/context> — <link>`. Match the existing style in the file.
+Don't log routine reviews, minor vault updates, or planning-only sessions.
+When in doubt, ask the user: "This looks significant enough for your career log — should I add it?"
 
 ### 12-week plan
 - Check off any completed items for this week
@@ -159,3 +180,13 @@ If today is the last working day of the current plan week:
 - Suggest bumping `current-week` in the 12-week plan frontmatter to the next week number
 - Move any incomplete items that are still relevant to next week's section
 - Note items that were planned but never started — these need a decision: move forward, drop, or rescope
+
+### dump.md triage (weekly, during rollover)
+Read `~/Notes/Planning/dump.md`. For each item, decide:
+- **Actionable this cycle** → move to `soon.md`
+- **Reusable command/snippet** → move to `~/Notes/Toolbox/Utils.md` or relevant Toolbox note
+- **Someday/maybe** → move to `eventually.md`
+- **Stale, irrelevant, or duplicate** → DELETE
+
+Present triage decisions to the user for confirmation before making changes.
+After triage, dump.md should have <30 lines. If items keep accumulating past 50 lines between triages, suggest more frequent cleanup.

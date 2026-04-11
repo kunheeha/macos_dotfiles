@@ -24,7 +24,7 @@ You MUST update ~/Notes/Claude/_WorkContext.md when ANY of these happen during t
 Update rules:
 - Surgical edits only — update the relevant section, don't rewrite the whole file
 - Always bump the `updated:` field in frontmatter to current datetime
-- Keep _WorkContext.md under ~80 lines. Move completed/historical detail to project notes.
+- Keep _WorkContext.md under ~60 lines. Move completed/historical detail to project notes.
 - **NEVER leave content only in the conversation.** If you draft a message, review, reply, analysis, or any artifact, write it to a vault note immediately (e.g., `Claude/Digests/` or relevant project folder). Conversations are ephemeral — future sessions cannot access them. References like "draft ready in this session" or "see conversation above" are useless to future sessions and are NOT acceptable.
 
 ### Session End (MANDATORY)
@@ -99,5 +99,6 @@ Key Claude Code paths:
   - `caveman.md` — `/caveman` skill (toggle terse caveman output)
 - `~/dots/claude/hooks/` → symlinked at `~/.claude/hooks/`
   - `caveman-detect.sh` — auto-activates caveman mode when prompt contains "ooga booga"
+  - `vault-context.sh` — injects vault note paths when working in ~/Projects/ repos (system docs + project notes discovered by name matching)
 
 If you need to find or modify a config file, check `~/dots/` first.
