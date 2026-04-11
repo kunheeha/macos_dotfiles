@@ -97,5 +97,7 @@ Key Claude Code paths:
   - `today.md` — `/today` skill (daily focus plan)
   - `eod.md` — `/eod` skill (end of day wrap-up)
   - `caveman.md` — `/caveman` skill (toggle terse caveman output)
+- `~/dots/claude/hooks/` → symlinked at `~/.claude/hooks/`
+  - `caveman-detect.sh` — auto-activates caveman mode when prompt contains "ooga booga"
 
 If you need to find or modify a config file, check `~/dots/` first.

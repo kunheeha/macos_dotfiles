@@ -11,6 +11,10 @@
           {
             "type": "command",
             "command": "cwd=$(pwd); if echo \"$cwd\" | grep -q \"$HOME/Projects/\"; then proj=$(echo \"$cwd\" | sed \"s|$HOME/Projects/||\" | cut -d/ -f1 | sed 's/\\.git$//'); vault=\"$HOME/Notes/Work/Projects/$proj\"; if [ ! -d \"$vault\" ]; then echo \"{\\\"feedback\\\": \\\"New project detected: $proj. No matching vault entry at ~/Notes/Work/Projects/$proj/. Consider asking the user if they want to register this in the vault.\\\"}\"; fi; fi"
+          },
+          {
+            "type": "command",
+            "command": "sh ~/.claude/hooks/caveman-detect.sh"
           }
         ]
       }
