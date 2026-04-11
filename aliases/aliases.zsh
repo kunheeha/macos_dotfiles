@@ -19,7 +19,7 @@ alias notes='cd ~/Notes'
 alias dots='cd ~/dots/'
 alias secrets='cd ~/.secrets'
 alias tmp='cd ~/tmp && vim tmp'
-alias today="vim ~/Notes/Todo/today.md"
+alias today="vim ~/Notes/Planning/today.md"
 alias personal='cd ~/Personal'
 alias docs='cd ~/Documents/'
 # use lsd instead of vanilla ls
