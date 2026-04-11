@@ -1,15 +1,20 @@
 #!/bin/sh
-# Detect "ooga booga" in user prompt and inject caveman rules.
+# Caveman mode with persistent state + periodic reinforcement.
 # Runs as UserPromptSubmit hook — reads JSON from stdin.
 
+STATEFILE="$TMPDIR/.caveman-active"
 input=$(cat)
 prompt=$(echo "$input" | jq -r '.prompt // empty')
 
+# Deactivate
 if echo "$prompt" | grep -qiE '(stop caveman|normal mode|deactivate caveman|caveman off)'; then
+  rm -f "$STATEFILE"
   exit 0
 fi
 
+# Activate — full rules on trigger phrase
 if echo "$prompt" | grep -qi 'ooga booga'; then
+  touch "$STATEFILE"
   cat <<'CAVEMAN'
 CAVEMAN MODE ACTIVATED. Follow these rules for ALL responses this session:
 
@@ -35,4 +40,12 @@ Drop caveman for: security warnings, irreversible action confirmations. Resume a
 Vault files (~/Notes/) and skill outputs (/today, /eod, /bodycomp): write in proper formatting. Caveman is for conversation only.
 "stop caveman" or "normal mode": deactivate.
 CAVEMAN
+  exit 0
+fi
+
+# Reinforce — short reminder if caveman still active
+if [ -f "$STATEFILE" ]; then
+  cat <<'REMIND'
+CAVEMAN MODE STILL ACTIVE. Drop articles (a/an/the). Use fragments. Verb-first. No filler. Start and end with "ooga booga". Self-check: any "the"/"a"/"an" outside code blocks = failing.
+REMIND
 fi
