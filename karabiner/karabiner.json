@@ -105,6 +105,30 @@
                         ]
                     },
                     {
+                        "description": "Ctrl-L to Cmd-L in browsers (focus address bar)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [{ "key_code": "l", "modifiers": ["left_command"] }],
+                                "conditions": [{
+                                    "type": "frontmost_application_if",
+                                    "bundle_identifiers": [
+                                        "^com\\.apple\\.Safari$",
+                                        "^com\\.google\\.Chrome$",
+                                        "^org\\.mozilla\\.firefox$",
+                                        "^com\\.microsoft\\.edgemac$",
+                                        "^com\\.brave\\.Browser$",
+                                        "^company\\.thebrowser\\.Browser$"
+                                    ]
+                                }]
+                            }
+                        ]
+                    },
+                    {
                         "description": "Option-Q to close window",
                         "manipulators": [
                             {
