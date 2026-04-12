@@ -7,7 +7,7 @@ input=$(cat)
 prompt=$(echo "$input" | jq -r '.prompt // empty')
 
 # Deactivate
-if echo "$prompt" | grep -qiE '(stop caveman|normal mode|deactivate caveman|caveman off)'; then
+if echo "$prompt" | grep -qiE '(stop caveman|exit caveman|normal mode|deactivate caveman|caveman off)'; then
   rm -f "$STATEFILE"
   exit 0
 fi
@@ -43,10 +43,10 @@ CAVEMAN
   exit 0
 fi
 
-# Reinforce — short reminder if caveman still active (with 4h TTL)
+# Reinforce — short reminder if caveman still active (with 2h TTL)
 if [ -f "$STATEFILE" ]; then
   file_age=$(( $(date +%s) - $(stat -f %m "$STATEFILE" 2>/dev/null || echo 0) ))
-  if [ "$file_age" -gt 14400 ]; then
+  if [ "$file_age" -gt 7200 ]; then
     rm -f "$STATEFILE"
     exit 0
   fi
