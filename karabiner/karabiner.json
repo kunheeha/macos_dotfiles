@@ -127,37 +127,6 @@
                                 }]
                             }
                         ]
-                    },
-                    {
-                        "description": "Option-Q to close window",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "q",
-                                    "modifiers": { "mandatory": ["left_option"] }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "w",
-                                        "modifiers": ["left_command"]
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "from": {
-                                    "key_code": "q",
-                                    "modifiers": { "mandatory": ["right_option"] }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "w",
-                                        "modifiers": ["left_command"]
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
                     }
                 ]
             },
