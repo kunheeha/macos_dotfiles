@@ -43,8 +43,13 @@ CAVEMAN
   exit 0
 fi
 
-# Reinforce — short reminder if caveman still active
+# Reinforce — short reminder if caveman still active (with 4h TTL)
 if [ -f "$STATEFILE" ]; then
+  file_age=$(( $(date +%s) - $(stat -f %m "$STATEFILE" 2>/dev/null || echo 0) ))
+  if [ "$file_age" -gt 14400 ]; then
+    rm -f "$STATEFILE"
+    exit 0
+  fi
   cat <<'REMIND'
 CAVEMAN MODE STILL ACTIVE. Drop articles (a/an/the). Use fragments. Verb-first. No filler. Start and end with "ooga booga". Self-check: any "the"/"a"/"an" outside code blocks = failing.
 REMIND
