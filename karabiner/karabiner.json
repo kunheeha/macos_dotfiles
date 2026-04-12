@@ -5,7 +5,7 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Ctrl-C/V/X/Z to Cmd-C/V/X/Z (except terminals)",
+                        "description": "Ctrl-C/V/X/Z/A to Cmd-C/V/X/Z/A (except terminals)",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -71,6 +71,25 @@
                                     "modifiers": { "mandatory": ["control"], "optional": ["shift"] }
                                 },
                                 "to": [{ "key_code": "z", "modifiers": ["left_command"] }],
+                                "conditions": [{
+                                    "type": "frontmost_application_unless",
+                                    "bundle_identifiers": [
+                                        "^com\\.apple\\.Terminal$",
+                                        "^net\\.kovidgoyal\\.kitty$",
+                                        "^com\\.googlecode\\.iterm2$",
+                                        "^io\\.alacritty$",
+                                        "^dev\\.warp\\.Warp-Stable$",
+                                        "^com\\.github\\.wez\\.wezterm$"
+                                    ]
+                                }]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": { "mandatory": ["control"] }
+                                },
+                                "to": [{ "key_code": "a", "modifiers": ["left_command"] }],
                                 "conditions": [{
                                     "type": "frontmost_application_unless",
                                     "bundle_identifiers": [
