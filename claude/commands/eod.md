@@ -69,7 +69,7 @@ After getting user input, make these updates:
 Update rules — enforce every /eod:
 - **Active Focus**: MAX 5 lines per item. State only what's current + immediate next step. Move narrative history, PR review details, and resolved sub-items to the project's `_index.md` or a dedicated project note. If an item is DONE or RESOLVED, remove it entirely — it's captured in SessionLogs.
 - **Blockers**: DELETE resolved blockers. Do not strikethrough. Resolved = gone. The resolution is recorded in SessionLogs and project notes.
-- **Recent Decisions**: Keep only decisions from the last 2 weeks. Move older entries to `~/Notes/Claude/_Decisions.md` with full context preserved there.
+- **Recent Decisions**: Keep only decisions dated within the last 14 days. For any entry with a date >14 days old, MOVE it to `~/Notes/Claude/_Decisions.md` — preserve full context (date, rationale, source links) in the destination. Do not just summarise. Order destination file newest-first within the same month section, creating month headings as needed. Bump `updated:` on _Decisions.md. This runs every /eod — no decision should sit in _WorkContext past 2 weeks.
 - **Open Questions**: DELETE answered questions. Do not strikethrough.
 - **Action Items from meetings**: DELETE completed items. If an item has been open >2 weeks with no progress, move it to the relevant project note or flag it in Next Session Priorities for the user to decide.
 - **Next Session Priorities**: Set based on what's most important next — be specific about meeting agendas, deadlines, and blocking items.
@@ -78,7 +78,22 @@ Update rules — enforce every /eod:
 - **Line count check**: After all updates, count total lines in _WorkContext.md. If >60, prune further. Target: 40-60 lines. The file must be scannable in 30 seconds.
 
 ### ~/Notes/Claude/SessionLogs/YYYY-MM.md
-Append a session entry:
+
+**Rollover check first.** If `~/Notes/Claude/SessionLogs/<current-month>.md` does not exist, create it with this header:
+```markdown
+---
+id: sessionlog-YYYY-MM
+aliases: [Session Log YYYY-MM]
+tags: [type/log, domain/claude-memory, status/active]
+created: <today's date>
+updated: <today's date>
+---
+
+# Session Log — <Month YYYY>
+```
+This makes month rollover automatic — the first /eod of each month seeds the new file.
+
+Append today's session entry (after the header if new file, else at bottom):
 ```
 ## YYYY-MM-DD HH:MM
 **Focus:** What the session was about
@@ -87,6 +102,8 @@ Append a session entry:
 **Files changed:** List of vault notes created/updated
 **Next:** What should happen next
 ```
+
+Bump `updated:` frontmatter on the SessionLog file.
 
 ### ~/Notes/Planning/soon.md
 - DELETE (not strikethrough) items that are done. They are already captured in SessionLogs.
@@ -135,6 +152,13 @@ When in doubt, ask the user: "This looks significant enough for your career log 
 ### 12-week plan
 - Check off any completed items for this week
 - If a task was partially done, leave it unchecked but add a note if helpful
+
+### ~/Notes/vault_index.md (monthly maintenance)
+Check the Claude section at the bottom of `vault_index.md`:
+- Ensure a `[[Claude/SessionLogs/YYYY-MM|Session Log]]` link exists for the **current month**. If missing, add it.
+- Keep links for the 3 most recent months visible (current, prior, prior-1). Older months stay accessible via folder browsing — do not list them all.
+- If any month was added/removed, bump the `updated:` field in frontmatter to today's date.
+- Do not restructure other sections — only the Claude SessionLog pointers are /eod's responsibility here.
 
 ## Step 5: Progress scorecard
 

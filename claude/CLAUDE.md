@@ -64,8 +64,8 @@ When the session is ending:
 - Code review format: `L<line>: <severity> <problem>. <fix>.` — one finding per line. Severity: 🔴 bug, 🟡 risk, 🔵 nit, ❓ q. No throat-clearing. Full explanation only for security findings and architectural disagreements.
 - "Review the changes" means READ THE ACTUAL SOURCE FILES and understand them. It does NOT mean run an automated code review skill or post comments on PRs.
 - Never post PR comments, reviews, or any GitHub-visible actions unless explicitly asked.
-- Always read the actual files before making claims about the code. Diffs and agent summaries are not substitutes for reading source files.
-- Before claiming something is unaddressed or broken, verify by reading the current file state.
+- **STOP. Git metadata is not code.** `git log`, `git diff --stat`, `git show --stat`, and commit messages tell you about committed history. They tell you NOTHING about uncommitted work, unstaged files, or what actually exists on a branch. You have gotten this wrong multiple times — concluding code "doesn't exist" because you didn't see it in the commit log, when it was sitting right there uncommitted. Before making ANY claim about what a branch contains or doesn't contain: run `git status`, grep for the feature, read the actual files. No exceptions. No shortcuts. If you catch yourself about to say "this branch has no X" based on git log output alone, you are about to be wrong.
+- Before claiming something is unaddressed or broken, verify by reading the current file state. Diffs and agent summaries are not substitutes for reading source files.
 - Use Code Search MCP to find prior art before implementing new patterns
 - Use GDrive MCP for RFC and design doc context
 
@@ -81,6 +81,7 @@ When the session is ending:
 - Body only when why isn't obvious: breaking changes, security fixes, migrations, linked issues. Why over what — diff says what.
 - Don't amend published commits
 - Don't force push to shared branches
+- **Worktrees in bare repos:** use `git worktree add <path>` or `git worktree add -b <branch> <path>` to create a worktree with a new branch directly — do NOT check out master/main first. `git worktree add <path>` creates a branch named after the path component from HEAD; `-b` lets you name it explicitly. Only use `git worktree add <path> <existing-branch>` when you actually need to check out an existing branch. This applies only to bare repo setups (~/Projects/).
 
 ## Project Layout
 - Active repos: ~/Projects/ (bare repos with git worktrees)

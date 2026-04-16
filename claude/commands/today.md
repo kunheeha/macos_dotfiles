@@ -42,7 +42,7 @@ Also consider:
 1. **Calendar + free time table** — show events and free blocks with durations
 2. **Available deep-work time** — total hours/minutes in blocks >= 45 min
 3. **Recommended focus areas** — numbered list, each with:
-   - What to do
+   - What to do — include `[[wikilinks]]` to the most relevant vault note for each item (e.g., the project index, specific RFC, review note, or ticket note). Use the links you encountered while gathering context in Step 1.
    - Which time block to do it in
    - Why it matters (tie to weekly focus, goal, or blocker)
 4. **What to skip today** — items from the todo list that don't fit today, and why (wrong week focus, blocked, lower priority)
@@ -78,7 +78,7 @@ updated: <today's date>
 <the calendar table>
 
 ### Focus
-<numbered focus areas with time blocks>
+<numbered focus areas with time blocks — each item includes [[wikilinks]] to the relevant vault note>
 
 ### Meeting strategy
 <talking points for each relevant meeting>
