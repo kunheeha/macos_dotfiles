@@ -40,3 +40,21 @@ for i = 1, 9 do
     end
   end)
 end
+
+-- Cycle macOS input source (replaces Ctrl-Space, which is reserved for vim LSP)
+hotkey.bind({"cmd", "shift"}, "space", function ()
+  local sources = {}
+  for _, s in ipairs(hs.keycodes.layouts(true) or {}) do table.insert(sources, s) end
+  for _, s in ipairs(hs.keycodes.methods(true) or {}) do table.insert(sources, s) end
+  if #sources < 2 then return end
+
+  local current = hs.keycodes.currentSourceID()
+  local nextIdx = 1
+  for i, s in ipairs(sources) do
+    if s == current then
+      nextIdx = (i % #sources) + 1
+      break
+    end
+  end
+  hs.keycodes.currentSourceID(sources[nextIdx])
+end)
