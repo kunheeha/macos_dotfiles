@@ -198,19 +198,12 @@ git -C ~/Notes commit -m "eod: YYYY-MM-DD"
 
 This creates a clean snapshot of the vault at end of day, making it easy to see what changed on any given day via `git log` and `git diff` later.
 
-## Weekly rollover (Fridays or when current-week is about to change)
+## Weekly rollover — delegated to `/week`
 
-If today is the last working day of the current plan week:
-- Suggest bumping `current-week` in the 12-week plan frontmatter to the next week number
-- Move any incomplete items that are still relevant to next week's section
-- Note items that were planned but never started — these need a decision: move forward, drop, or rescope
+`/eod` does NOT handle weekly rollover (bumping `current-week`, moving incomplete 12-week items forward, `dump.md` triage). Those live in `/week` (typically Sunday evening).
 
-### dump.md triage (weekly, during rollover)
-Read `~/Notes/Planning/dump.md`. For each item, decide:
-- **Actionable this cycle** → move to `soon.md`
-- **Reusable command/snippet** → move to `~/Notes/Toolbox/Utils.md` or relevant Toolbox note
-- **Someday/maybe** → move to `eventually.md`
-- **Stale, irrelevant, or duplicate** → DELETE
+**Staleness check at the end of /eod:** compare the `current-week` value in the active 12-week plan's frontmatter against today's date. Each week in the plan has a date range header (e.g. `## Week 7 13/04 - 19/04`). If today's date is past the end of the `current-week` week's range, mention at the end of the /eod report:
 
-Present triage decisions to the user for confirmation before making changes.
-After triage, dump.md should have <30 lines. If items keep accumulating past 50 lines between triages, suggest more frequent cleanup.
+> *"Weekly rollover is overdue — `/week` hasn't been run for this week. Run `/week` when you have a moment to advance `current-week`, triage `dump.md`, and plan the week ahead."*
+
+Do not perform the rollover automatically — that is `/week`'s job and requires user confirmation on carry/drop decisions.

@@ -5,11 +5,15 @@ Generate a tactical daily plan based on my calendar, current priorities, and 12-
 ## Step 1: Gather context (read all in parallel)
 
 - `~/Notes/Claude/_WorkContext.md` — current priorities, blockers, open questions, next session priorities
+- `~/Notes/Planning/week.md` — the weekly strategic plan written by `/week` on Sunday. Contains a day-by-day focus section, buffer-block allocations, and the breakout block. **If present, this is the primary anchor for today's plan** — use its row for today as the baseline.
 - `~/Notes/Planning/today.md` — check for any ad-hoc items the user added manually during the day
 - `~/Notes/Planning/soon.md` — backlog of upcoming tasks, buffer/personal items
 - `~/Notes/Planning/12week/goals-mar-may.md` — goal categories for the quarter
 - The active 12-week plan file linked from `~/Notes/Planning/12week/goals-mar-may.md` or the most recent `plan-*.md` in `~/Notes/Planning/12week/` — check the `current-week` frontmatter field to identify which week we're in and what this week's focus area and tasks are
 - Google Calendar MCP: fetch today's events from the primary calendar
+
+### If `week.md` is missing or stale
+If `week.md` doesn't exist, or its `week-of` frontmatter is for a week that isn't the current one: proceed without it, and note at the end of the plan that `/week` hasn't been run for this week.
 
 ## Step 2: Analyze available time
 
@@ -23,7 +27,13 @@ Working hours are 08:00–16:00 (with occasional overrun to 17:00). Only schedul
 
 ## Step 3: Assign tasks to time blocks
 
-Prioritize by:
+**If `week.md` exists and covers the current week:** use its day-specific plan for today as the baseline. Don't re-derive from scratch. The week plan already considered the 12-week plan, Next Session Priorities, and carried items across all 7 days — today's row is the pre-reasoned slice. Your job now is to:
+- Reconcile the week-plan-assigned focuses against the *actual* calendar today (meetings may have shifted, deep-work blocks may have compressed)
+- Pull in any buffer-block items assigned to today in week.md
+- Layer in intraday adjustments from `_WorkContext.md` "Next Session Priorities" that emerged after Sunday
+- Note explicitly if today's week-plan row is no longer realistic and something needs to slide
+
+**If `week.md` is missing or stale:** derive from scratch. Prioritize by:
 1. **This week's 12-week plan focus area** — the plan marks a focus for each week. Tasks in that area get priority for deep-work blocks.
 2. **Unblocking work** — anything that, if done, unblocks others or unblocks future tasks (e.g., pinging someone for a review, sending a message, resolving an open question).
 3. **Deadlines and time-sensitivity** — items with hard deadlines or that are at risk if not started today.

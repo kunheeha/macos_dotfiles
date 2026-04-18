@@ -76,5 +76,5 @@
     "feature-dev@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true
   },
-  "effortLevel": "high"
+  "effortLevel": "xhigh"
 }
