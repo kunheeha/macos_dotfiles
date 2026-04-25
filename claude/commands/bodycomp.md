@@ -17,7 +17,13 @@ Use AskUserQuestion to ask:
    - **Scale / bioimpedance** (low confidence): log WITH `~` prefix.
    - **Skip**: log as `—`.
 3. **Yesterday's macros** — protein (g), carbs (g), fat (g). The user tracks these daily so they should have the numbers.
-4. **Yesterday's caloric deficit/surplus** — from the user's tracking app. Negative = deficit (e.g., -500 means 500cal under TDEE), positive = surplus. The user provides this as a single number like `-350` or `+100`. Do NOT ask for total calories — the deficit/surplus is the only calorie metric tracked.
+4. **Yesterday's calories from tracker** — ask for both numbers (the tracker shows each directly; user shouldn't have to do arithmetic):
+   - **Total calories consumed** (kcal eaten yesterday)
+   - **Total calories burnt** (TDEE + exercise, as the tracker estimates)
+
+   **Compute the deficit using the Bash tool, not mental arithmetic.** Run `echo $(( <consumed> - <burnt> ))` — negative result = deficit, positive = surplus. This matches the existing log convention. LLM arithmetic is reliable but not guaranteed; shell arithmetic is deterministic and zero-cost.
+
+   Before writing to the log, echo the three numbers back to the user for a one-line sanity check, e.g.: *"Consumed 2150, burnt 2540 → deficit -390. Log this?"* — then log only after confirmation (or proceed silently if the numbers look sane and the user is doing the check themselves).
 5. **Did you train yesterday?** If yes, what type: weights / weights+cardio / cardio. If no, log as rest. This captures *completed* training, not plans — avoids logging intent that may not happen.
 6. **Notes** — optional
 
