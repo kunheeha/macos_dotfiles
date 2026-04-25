@@ -59,6 +59,10 @@
           {
             "type": "command",
             "command": "vault=\"$HOME/Notes/Claude/_WorkContext.md\"; last_updated=$(head -10 \"$vault\" 2>/dev/null | grep '^updated:' | sed 's/updated: *//'); today=$(date +%Y-%m-%d); if echo \"$last_updated\" | grep -q \"$today\"; then echo '{\"feedback\": \"Session ending. _WorkContext.md was updated today. Verify Next Session Priorities are set and append session entry to SessionLogs if not already done.\"}'; else echo \"{\\\"feedback\\\": \\\"Session ending. _WorkContext.md was last updated: $last_updated (NOT today). If substantive work occurred, you MUST update Active Focus, Next Session Priorities, and append to SessionLogs NOW.\\\"}\"; fi"
+          },
+          {
+            "type": "command",
+            "command": "sh ~/.claude/hooks/vault-link-check.sh"
           }
         ]
       }
@@ -76,5 +80,7 @@
     "feature-dev@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true
   },
-  "effortLevel": "xhigh"
+  "effortLevel": "xhigh",
+  "theme": "auto",
+  "skipAutoPermissionPrompt": true
 }
