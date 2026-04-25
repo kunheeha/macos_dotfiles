@@ -98,6 +98,7 @@ Key Claude Code paths:
   - `today.md` — `/today` skill (daily focus plan)
   - `eod.md` — `/eod` skill (end of day wrap-up)
   - `caveman.md` — `/caveman` skill (toggle terse caveman output)
+  - `payslip.md` — `/payslip` skill (monthly payslip analysis + pension sacrifice recalibration)
 - `~/dots/claude/hooks/` → symlinked at `~/.claude/hooks/`
   - `caveman-detect.sh` — auto-activates caveman mode when prompt contains "ooga booga"
   - `vault-context.sh` — injects vault note paths when working in ~/Projects/ repos (system docs + project notes discovered by name matching)
