@@ -45,29 +45,43 @@ Parse all rows from the log table and calculate the following. Present results t
 
 ### Trend
 
-- **7-day moving average** for weight: average of the last 7 entries' weight values
-- **7-day moving average** for BF%: average of BF% entries in the last 7 days that have a value (need at least 2 data points; if fewer, skip this metric and note it). Values prefixed with `~` are low confidence — still include in averages but note the confidence level.
-- **Weekly rate of change**: compare this week's average to last week's average for both weight and BF%
-- If fewer than 7 days of data exist, show raw values and note: "Trends available after 1 week of data"
+**Measurement-noise reality check.** A 1cm waist swing on Navy = ~0.7% BF. Never anchor a verdict on a single day's reading. Require ≥14-day rolling means for any rate claim, and prefer linear regression over a 1-week-vs-1-week delta (which is dominated by noise — a single noisy week on either end can flip a +0.1%/wk recomp into a -0.4%/wk "AHEAD" hallucination).
+
+**Bioimpedance exclusion.** Once ≥14 high-confidence entries (Navy/DEXA, no `~` prefix) exist, **exclude all `~` entries from trend and projection calculations entirely** — bioimpedance has been observed ~3% off from Navy taken within days, large enough to corrupt any regression. If <14 high-confidence entries exist, fall back to weight trend + nutrition adherence as primary signals and say so explicitly.
+
+- **Weight 7-day average**: average of the last 7 weight entries.
+- **Weight rate of change**: linear regression slope over all weight entries within the cycle (kg/week). Bioimpedance scales report weight reliably even when BF% is noisy, so weight regression can use all entries.
+- **BF% rate of change**: linear regression slope over all high-confidence (non-`~`) BF% entries within the cycle (% per week). Minimum 14 data points. If fewer than 14, do not produce a rate claim — note "trend signal too weak — fewer than 14 Navy/DEXA readings; rely on weight trend + nutrition adherence."
+- **Cycle-start anchor**: report `BF% at first high-confidence reading of cycle (date) → today (date)`, total change, weeks elapsed, and average %/week over that window. This is the most stable framing for a 12-week cycle and should be presented before any short-window number.
+- Use the Bash tool (e.g. `python3 -c "..."` with `numpy.polyfit` or a manual least-squares calc) for regression slopes. Do not eyeball.
+- If fewer than 7 days of weight data exist, show raw values and note: "Trends available after 1 week of data"
 
 ### Projection
 
-- Calculate weeks remaining: `12 - current-week` (from the plan frontmatter) + fraction of current week remaining
-- **Linear projection**: current 7-day average + (weekly rate of change * weeks remaining)
-- Do this for both weight and BF% (BF% only if enough data)
-- Compare projected BF% to goal: < 12%
-- **Weight is a guardrail, not a target.** Use weight trend to detect:
-  - **Muscle loss risk**: weight dropping > 0.5–1% of bodyweight/week (~0.3–0.6kg/week at ~64kg) while in a deficit — suggest slowing the cut
-  - **Insufficient deficit**: weight rising or flat over 2+ weeks — suggest tightening nutrition or adding cardio
-  - **Ideal signal**: weight stable or slowly decreasing while training is consistent = likely recomposition
-- **Important**: if all BF% data is low confidence (`~` prefix), note this in the projection and flag that weight trend + nutrition adherence are more reliable indicators of progress. If there is a mix of high and low confidence data, weight high-confidence entries more heavily — use them as anchor points and interpolate between them using weight trend for the weeks in between.
+Compute **two independent projections** and compare them. The verdict is only allowed to claim a precise outcome if both projections agree. This guardrail exists because regression-based projection over short, noisy windows has historically produced overconfident "AHEAD" verdicts that contradict the energy-balance reality.
 
-Assign a verdict based on **BF% projection only**:
-- **ON TRACK**: projected to reach < 12% by end of cycle
-- **AHEAD**: projected to reach < 12% well before end of cycle
-- **AT RISK**: projected to miss by a small margin — adjustments recommended
-- **BEHIND**: projected to miss by a significant margin — action needed
-- If insufficient data for projection, say so and give a verdict based on available data
+- Calculate weeks remaining: `12 - current-week` (from the plan frontmatter) + fraction of current week remaining.
+- **Projection 1 — Regression-based**: `current_7day_BF% + (regression_slope × weeks_remaining)`. Only valid if ≥14 high-confidence entries exist.
+- **Projection 2 — Physics-based (energy balance)**:
+  - `expected_fat_loss_kg = (avg_daily_deficit × days_remaining) / 7700`  (treat avg_daily_deficit as a positive number; e.g. -250 cal/day → use 250)
+  - `expected_BF%_drop = (expected_fat_loss_kg × 0.8 / current_weight_kg) × 100`  (the 0.8 factor assumes 80% of fat-loss-equivalent kcal goes to fat and 20% to LBM, which is standard for moderate cuts; if weight is rising or flat over 2+ weeks, treat as recomp and use 1.0)
+  - `physics_projection = current_BF% - expected_BF%_drop`
+  - Use the Bash tool to compute, not mental arithmetic.
+- **Cross-check (REQUIRED)**: if the two projections disagree by **>2× in the magnitude of BF%-drop predicted**, flag the verdict as **UNCERTAIN** and report both numbers with the divergence explained. Common causes: tracker overestimates deficit, short-window regression dominated by measurement noise, or recomp masking actual fat loss in the BF% signal. Do NOT pick one and hide the other.
+- Also project weight using its regression slope.
+
+**Weight is a guardrail, not a target.** Use weight trend to detect:
+  - **Muscle loss risk**: weight dropping > 0.5–1% of bodyweight/week (~0.3–0.6kg/week at ~64kg) while in a deficit — suggest slowing the cut.
+  - **Insufficient deficit**: weight rising or flat over 2+ weeks while in a stated deficit — either the deficit estimate is wrong (TDEE off) or recomp is consuming it. Compare physics projection to regression projection: if physics says fat is being lost but BF% regression doesn't show it, the measurement noise floor is hiding it.
+  - **Ideal signal**: weight stable or slowly decreasing while training is consistent = likely recomposition.
+
+**Verdict (apply to both projections; verdict tracks the worse of the two unless flagged UNCERTAIN):**
+- **AHEAD**: both projections land >0.5% below target (e.g., ≤11.5% for a <12% goal).
+- **ON TRACK**: at least one projection lands at-or-below target, and the other is within 0.3% above.
+- **AT RISK**: best projection misses target by ≤0.3%.
+- **BEHIND**: both projections miss target by >0.3%.
+- **UNCERTAIN**: the two projections disagree by >2× in predicted BF% drop. Report both and explain the divergence rather than picking one.
+- **INSUFFICIENT DATA**: <14 high-confidence BF% entries. Rely on weight trend + nutrition adherence and say so.
 
 Include weight observations (muscle loss risk, deficit adequacy) in the recommendation section, not the verdict.
 
@@ -131,16 +145,23 @@ Present the evaluation in this format:
 ## Body Comp Check — YYYY-MM-DD
 
 ### Today's Entry
-Weight: XXkg | BF%: XX% (or —) | Plan: [type]
+Weight: XXkg | BF%: XX% (or —)
 Yesterday's macros: P: XXXg | C: XXXg | F: XXXg | Deficit: -XXX
 
-### Trend (7-day avg)
-Weight: XXkg (↓/↑ X.Xkg/week) | BF%: XX% (↓/↑ X.X%/week) [low confidence]
+### Cycle Progress (anchor)
+First high-confidence reading (YYYY-MM-DD): XX.X% → today (YYYY-MM-DD): XX.X% — change X.X% over X.X weeks (X.XX%/week)
+
+### Trend
+Weight: XXkg 7-day avg, ±X.Xkg/week (regression over N entries)
+BF%: XX.X% 7-day avg, ±X.XX%/week (regression over N high-confidence entries) — or "trend signal too weak — fewer than 14 Navy/DEXA readings; using weight + nutrition only"
 Calories: XXXXcal/day | Protein: XXXg/day (X.Xg/kg) | Avg deficit: -XXX/day
 
-### Projection → Week 12 (May 24)
-BF%: XX% [✓/⚠️/✗] — Verdict: [ON TRACK / AT RISK / BEHIND / AHEAD]
-Weight: XXkg (↓/↑ X.Xkg/week) — [stable ✓ / dropping fast ⚠️ / rising ⚠️]
+### Projection → Week 12 (end-of-cycle date)
+Regression-based: XX.X% [✓/⚠️/✗]
+Physics-based (deficit × days ÷ 7700, ×0.8 fat fraction): XX.X% [✓/⚠️/✗]
+Verdict: [AHEAD / ON TRACK / AT RISK / BEHIND / UNCERTAIN / INSUFFICIENT DATA]
+[If UNCERTAIN: one-line reason for the divergence, e.g. "regression says -1.2% but physics says -0.4% — likely measurement noise dominating short-window slope"]
+Weight: XXkg — [stable ✓ / dropping fast ⚠️ / rising ⚠️]
 
 ### Training This Week
 Sessions: X/5 target | Cardio: X | Rest days: X
